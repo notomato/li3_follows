@@ -27,7 +27,7 @@ class FollowsController extends \lithium\action\Controller {
 					Follows::unfollow($follower, $followed);
 				}
 				else {
-					Follows::follow($follower, $followed);
+					$result = Follows::follow($follower, $followed);
 				}
 				echo 'true';
 				return true;

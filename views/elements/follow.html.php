@@ -1,4 +1,5 @@
-<?php $following = $following->isFollowing($followed) ? true : false ?>
+<?php $following = \li3_follows\models\Follows::isFollowing($user, $followed) ? true : false ?>
+
 <a class="<?= $class; ?> follow <?= $following ? 'btn-success' : ''; ?>" rel="tooltip" 
    title="<?= $following ? $unfollow_text : $follow_text; ?>" 
    data-follow_text="<?= $follow_text ?>" 

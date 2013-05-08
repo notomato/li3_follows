@@ -37,7 +37,8 @@ class Follow extends \lithium\template\Helper {
 		
 		if ($userData && $following = $userClass::first((string) $userData['_id'])) {
 			$type = array($options['type'] => $options['template']);
-			$data = $options['data'] + compact('followed','following');
+            $user = $userClass::first($userData['_id']);
+			$data = $options['data'] + compact('followed','following', 'user');
 			$view = $this->_context->view();
 			return $view->render($type, $data, $options['options']);
 		}

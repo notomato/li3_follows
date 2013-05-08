@@ -125,7 +125,8 @@ class Follows extends Model {
 			'limit' => null,
 			'order' => null,
 			'fields' => null,
-			'conditions' => array()
+			'conditions' => array(),
+            'return' => 'array'
 		);
 		$options = Set::merge($defaults, $options);
 
@@ -134,9 +135,21 @@ class Follows extends Model {
 		$model = $entity->model();
 		
 		$data = Follows::all(compact('conditions','page','limit','order','fields'))->to('array');
-		$followers = Set::extract($data, '/follower_id');
-		$followers = Users::all(array('conditions' => array('_id' => $followers)));
-		$count = Follows::count(compact('conditions'));
+        if (empty($data)) {
+            return array(array(), 0);
+        }
+		foreach ($data as $id => $follower) {
+            $followers[] = $follower['follower_id'];
+        }
+
+		$followers = Users::all(array(
+            'conditions' => array(
+                '_id' => array(
+                    '$in' => $followers
+                )
+            )
+        ));
+        $count = Follows::count(compact('conditions'));
 
 		return array($followers, $count);
 	}
